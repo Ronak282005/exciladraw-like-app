@@ -9,4 +9,7 @@ wss.on("connection",(ws,request)=>{
     }
     const queryParm = new URLSearchParams(url.split("?")[1])
     const token = queryParm.get("token")
+    ws.on("message",(data)=>{
+        ws.send("pong")
+    })
 })
