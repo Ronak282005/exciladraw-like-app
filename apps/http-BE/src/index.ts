@@ -43,7 +43,7 @@ app.post("/signin", (req, res) => {
   });
 });
 
-app.post("/create-room",authMiddleware, (req, res) => {});
+app.post("/room",authMiddleware, (req, res) => {});
 
 app.listen(3001, () => {
   console.log("listening on the port 3000");
