@@ -1,7 +1,7 @@
 import express from "express";
 import { z } from "zod";
 import bcrypt from "bcrypt";
-import  jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { ENV } from "./config";
 
 const app = express();
@@ -20,26 +20,26 @@ app.post("/signup", async (req, res) => {
     });
   }
   const hashedPassword = await bcrypt.hash(password, 10);
-//   db logic
+  //   db logic
   res.json({
-    msg : "User added succesfully!"
-  })
+    msg: "User added succesfully!",
+  });
 });
 
 app.post("/signin", (req, res) => {
-    const { success } = bodyInput.safeParse(req.body);
+  const { success } = bodyInput.safeParse(req.body);
   const { password, username } = req.body;
   if (!success) {
     res.status(403).json({
       msg: "invalid inputs!",
     });
   }
-//   db logic
-  const comparePass = bcrypt.compare(password,user.password)
-  const token = jwt.sign({userId : user._id},ENV.JWT_SECRET)
+  //   db logic
+  const comparePass = bcrypt.compare(password, user.password);
+  const token = jwt.sign({ userId: user._id }, ENV.JWT_SECRET);
   res.json({
-    token
-  })
+    token,
+  });
 });
 
 app.post("/create-room", (req, res) => {});
