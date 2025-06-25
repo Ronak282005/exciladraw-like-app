@@ -43,7 +43,12 @@ app.post("/signin", (req, res) => {
   });
 });
 
-app.post("/room", authMiddleware, (req, res) => {});
+app.post("/room", authMiddleware, (req, res) => {
+    // db logic
+    res.json({
+        roomId : "123"
+    })
+});
 
 app.listen(3001, () => {
   console.log("listening on the port 3000");
