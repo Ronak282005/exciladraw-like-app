@@ -18,6 +18,10 @@ app.post("/signup", async (req, res) => {
     });
   }
   const hashedPassword = await bcrypt.hash(password, 10);
+//   db logic
+  res.json({
+    msg : "User added succesfully!"
+  })
 });
 
 app.post("/signin", (req, res) => {});
