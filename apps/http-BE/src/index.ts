@@ -3,6 +3,7 @@ import { z } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ENV } from "./config";
+import { authMiddleware } from "./middleware";
 
 const app = express();
 
@@ -42,7 +43,7 @@ app.post("/signin", (req, res) => {
   });
 });
 
-app.post("/create-room", (req, res) => {});
+app.post("/create-room",authMiddleware, (req, res) => {});
 
 app.listen(3001, () => {
   console.log("listening on the port 3000");
