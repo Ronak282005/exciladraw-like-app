@@ -1,6 +1,8 @@
 import express from "express";
 import { z } from "zod";
 import bcrypt from "bcrypt";
+import  jwt  from "jsonwebtoken";
+import { ENV } from "./config";
 
 const app = express();
 
@@ -24,7 +26,21 @@ app.post("/signup", async (req, res) => {
   })
 });
 
-app.post("/signin", (req, res) => {});
+app.post("/signin", (req, res) => {
+    const { success } = bodyInput.safeParse(req.body);
+  const { password, username } = req.body;
+  if (!success) {
+    res.status(403).json({
+      msg: "invalid inputs!",
+    });
+  }
+//   db logic
+  const comparePass = bcrypt.compare(password,user.password)
+  const token = jwt.sign({userId : user._id},ENV.JWT_SECRET)
+  res.json({
+    token
+  })
+});
 
 app.post("/create-room", (req, res) => {});
 
