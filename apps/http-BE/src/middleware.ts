@@ -11,6 +11,16 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
                 msg: "Invalid Token!"
             })
         }
+        //@ts-ignore
+        if(decode.userId){
+            // @ts-ignore
+            res.userId = decode.userId
+            next()
+        }else{
+            return res.status(403).json({
+                msg: "Invalid Token2!"
+            })
+        }
     } catch (error) {
         res.json({
             error
