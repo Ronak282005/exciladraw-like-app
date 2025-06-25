@@ -2,7 +2,11 @@ import { WebSocketServer } from "ws";
 
 const wss = new WebSocketServer({port : 8080})
 
-wss.on("connection",(socket)=>{
-    console.log("connection made");
-    socket.send("Hello there!")
+wss.on("connection",(ws,request)=>{
+    const url = request.url
+    if(!url){
+        return
+    }
+    const queryParm = new URLSearchParams(url.split("?")[1])
+    const token = queryParm.get("token")
 })
