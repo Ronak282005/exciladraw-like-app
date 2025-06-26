@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { ENV } from "./config";
 
 export const authMiddleware = (
@@ -15,10 +15,9 @@ export const authMiddleware = (
         msg: "Invalid Token!",
       });
     }
-    // @ts-ignore
-    if (decode.userId) {
+    if ((decode as JwtPayload).userId) {
       // @ts-ignore
-      res.userId = decode.userId;
+      res.userId = (decode as JwtPayload).userId;
       next();
     } else {
       return res.status(403).json({
