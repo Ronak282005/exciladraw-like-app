@@ -4,16 +4,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ENV } from "@repo/backend-common/config";
 import { authMiddleware } from "./middleware";
+import {CreateUserSchema} from "@repo/common/types"
 
 const app = express();
 
-const bodyInput = z.object({
-  username: z.string(),
-  password: z.string(),
-});
-
 app.post("/signup", async (req, res) => {
-  const { success } = bodyInput.safeParse(req.body);
+  const { success } = CreateUserSchema.safeParse(req.body);
   const { password, username } = req.body;
   if (!success) {
     res.status(403).json({
