@@ -15,7 +15,7 @@ export const authMiddleware = (
         msg: "Invalid Token!",
       });
     }
-    //@ts-ignore
+    // @ts-ignore
     if (decode.userId) {
       // @ts-ignore
       res.userId = decode.userId;
