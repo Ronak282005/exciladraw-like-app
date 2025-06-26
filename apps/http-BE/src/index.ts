@@ -59,20 +59,19 @@ app.post("/signin", async (req, res) => {
   }
   try {
     const existingUser = await prismaClient.user.findFirst({
-      where : {
-        email : username
-      }
+      where: {
+        email: username,
+      },
     });
     if (existingUser) {
       const comparePass = await bcrypt.compare(password, existingUser.password);
-      if(comparePass){
+      if (comparePass) {
         const token = jwt.sign({ userId: existingUser.id }, ENV.JWT_SECRET);
         res.json({
-      token,
-    });
+          token,
+        });
       }
     }
-    
   } catch (error) {
     res.status(403).json({
       error,
