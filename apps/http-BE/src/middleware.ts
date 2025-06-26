@@ -12,18 +12,20 @@ export const authMiddleware = (
   try {
     const decode = jwt.verify(token as string, ENV.JWT_SECRET);
     if (!decode) {
-      return res.status(403).json({
+      res.status(403).json({
         msg: "Invalid Token!",
       });
+      return
     }
     if ((decode as JwtPayload).userId) {
       // @ts-ignore
       res.userId = (decode as JwtPayload).userId;
       next();
     } else {
-      return res.status(403).json({
+      res.status(403).json({
         msg: "Invalid Token2!",
       });
+      return
     }
   } catch (error) {
     res.json({
