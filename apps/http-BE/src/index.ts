@@ -13,19 +13,18 @@ import { prismaClient } from "@repo/db/client";
 const app = express();
 
 app.post("/signup", async (req, res) => {
-  const { success } = CreateUserSchema.safeParse(req.body);
-  const { password, username, name } = req.body;
-  if (!success) {
+  const parsedData = CreateUserSchema.safeParse(req.body);
+  if (!parsedData.success) {
     res.status(403).json({
       msg: "invalid inputs!",
     });
     return
   }
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(parsedData.data.password, 10);
     const existingUser = await prismaClient.user.findFirst({
       where: {
-        email: username,
+        email: parsedData.data.username,
       },
     });
     if (existingUser) {
@@ -35,8 +34,8 @@ app.post("/signup", async (req, res) => {
     }
     const user = await prismaClient.user.create({
       data: {
-        name,
-        email: username,
+        name : parsedData.data.name,
+        email: parsedData.data.username,
         password: hashedPassword,
       },
     });
