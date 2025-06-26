@@ -11,7 +11,7 @@ wss.on("connection", (ws, request) => {
   }
   const queryParm = new URLSearchParams(url.split("?")[1]);
   const token = queryParm.get("token");
-  const decode = jwt.verify(token, JWT_SECRET);
+  const decode = jwt.verify(token as string, ENV.JWT_SECRET);
   if (!decode || !(decode as JwtPayload).userId) {
     ws.close();
     return;
