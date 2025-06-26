@@ -18,7 +18,7 @@ app.post("/signup", async (req, res) => {
     res.status(403).json({
       msg: "invalid inputs!",
     });
-    return
+    return;
   }
   try {
     const hashedPassword = await bcrypt.hash(parsedData.data.password, 10);
@@ -34,7 +34,7 @@ app.post("/signup", async (req, res) => {
     }
     const user = await prismaClient.user.create({
       data: {
-        name : parsedData.data.name,
+        name: parsedData.data.name,
         email: parsedData.data.username,
         password: hashedPassword,
       },
@@ -55,7 +55,7 @@ app.post("/signin", async (req, res) => {
     res.status(403).json({
       msg: "invalid inputs!",
     });
-    return
+    return;
   }
   try {
     const existingUser = await prismaClient.user.findFirst({
@@ -64,7 +64,10 @@ app.post("/signin", async (req, res) => {
       },
     });
     if (existingUser) {
-      const comparePass = await bcrypt.compare(parsedData.data.password, existingUser.password);
+      const comparePass = await bcrypt.compare(
+        parsedData.data.password,
+        existingUser.password
+      );
       if (comparePass) {
         const token = jwt.sign({ userId: existingUser.id }, ENV.JWT_SECRET);
         res.json({
