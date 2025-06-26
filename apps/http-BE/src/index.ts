@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { ENV } from "@repo/backend-common/config";
 import { authMiddleware } from "./middleware";
 import { CreateUserSchema, SigninSchema , CreateRoomSchema } from "@repo/common/types";
+import client from "@repo/db/client"
 
 const app = express();
 
