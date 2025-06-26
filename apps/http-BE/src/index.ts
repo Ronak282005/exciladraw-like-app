@@ -50,9 +50,8 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/signin", async (req, res) => {
-  const { success } = SigninSchema.safeParse(req.body);
-  const { password, username } = req.body;
-  if (!success) {
+  const parsedData = SigninSchema.safeParse(req.body);
+  if (!parsedData.success) {
     res.status(403).json({
       msg: "invalid inputs!",
     });
@@ -61,11 +60,11 @@ app.post("/signin", async (req, res) => {
   try {
     const existingUser = await prismaClient.user.findFirst({
       where: {
-        email: username,
+        email: parsedData.data.username,
       },
     });
     if (existingUser) {
-      const comparePass = await bcrypt.compare(password, existingUser.password);
+      const comparePass = await bcrypt.compare(parsedData.data.password, existingUser.password);
       if (comparePass) {
         const token = jwt.sign({ userId: existingUser.id }, ENV.JWT_SECRET);
         res.json({
