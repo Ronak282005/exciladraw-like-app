@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ENV } from "@repo/backend-common/config";
 import { authMiddleware } from "./middleware";
-import {CreateUserSchema} from "@repo/common/types"
+import { CreateUserSchema } from "@repo/common/types";
 
 const app = express();
 
@@ -40,10 +40,10 @@ app.post("/signin", (req, res) => {
 });
 
 app.post("/room", authMiddleware, (req, res) => {
-    // db logic
-    res.json({
-        roomId : "123"
-    })
+  // db logic
+  res.json({
+    roomId: "123",
+  });
 });
 
 app.listen(3001, () => {
