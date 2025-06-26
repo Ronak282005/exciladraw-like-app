@@ -64,21 +64,21 @@ app.post("/signin", async (req, res) => {
         email: parsedData.data.username,
       },
     });
-    if(!existingUser){
+    if (!existingUser) {
       res.status(403).json({
-      msg: "invalid inputs!",
-    });
-    return;
+        msg: "invalid inputs!",
+      });
+      return;
     }
-      const comparePass = await bcrypt.compare(
-        parsedData.data.password,
-        existingUser.password
-      );
-      if (comparePass) {
-        const token = jwt.sign({ userId: existingUser.id }, ENV.JWT_SECRET);
-        res.json({
-          token,
-        });
+    const comparePass = await bcrypt.compare(
+      parsedData.data.password,
+      existingUser.password
+    );
+    if (comparePass) {
+      const token = jwt.sign({ userId: existingUser.id }, ENV.JWT_SECRET);
+      res.json({
+        token,
+      });
     }
   } catch (error) {
     res.status(403).json({
