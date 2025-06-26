@@ -58,12 +58,21 @@ app.post("/signin", async (req, res) => {
     });
   }
   try {
-    const user = await prismaClient.User.find;
-    const comparePass = bcrypt.compare(password, user.password);
-    const token = jwt.sign({ userId: user.id }, ENV.JWT_SECRET);
-    res.json({
+    const existingUser = await prismaClient.user.findFirst({
+      where : {
+        email : username
+      }
+    });
+    if (existingUser) {
+      const comparePass = await bcrypt.compare(password, existingUser.password);
+      if(comparePass){
+        const token = jwt.sign({ userId: existingUser.id }, ENV.JWT_SECRET);
+        res.json({
       token,
     });
+      }
+    }
+    
   } catch (error) {
     res.status(403).json({
       error,
