@@ -104,6 +104,8 @@ importers:
         specifier: ^8.18.2
         version: 8.18.2
 
+  packages/backend-common: {}
+
   packages/eslint-config:
     devDependencies:
       '@eslint/js':
