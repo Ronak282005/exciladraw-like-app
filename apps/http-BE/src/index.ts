@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { ENV } from "@repo/backend-common/config";
 import { authMiddleware } from "./middleware";
 import { CreateUserSchema, SigninSchema , CreateRoomSchema } from "@repo/common/types";
-import client from "@repo/db/client"
+import {prismaClient} from "@repo/db/client"
 
 const app = express();
 
@@ -16,11 +16,21 @@ app.post("/signup", async (req, res) => {
       msg: "invalid inputs!",
     });
   }
-  const hashedPassword = await bcrypt.hash(password, 10);
-  //   db logic
-  res.json({
-    msg: "User added succesfully!",
-  });
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await prismaClient.user.create({
+      username,
+      password,
+      name
+    })
+    res.json({
+      msg: "User added succesfully!",
+    });
+  } catch (error) {
+    res.json({
+      error
+    })
+  }
 });
 
 app.post("/signin", (req, res) => {
