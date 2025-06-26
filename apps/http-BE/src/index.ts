@@ -52,6 +52,6 @@ app.post("/room", authMiddleware, (req, res) => {
   });
 });
 
-app.listen(3001, () => {
+app.listen(ENV.HTTP_PORT || 3001, () => {
   console.log("listening on the port 3000");
 });
