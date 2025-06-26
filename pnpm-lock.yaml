@@ -104,7 +104,11 @@ importers:
         specifier: ^8.18.2
         version: 8.18.2
 
-  packages/backend-common: {}
+  packages/backend-common:
+    dependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
 
   packages/eslint-config:
     devDependencies:
