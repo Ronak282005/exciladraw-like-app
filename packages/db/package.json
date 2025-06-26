@@ -14,7 +14,8 @@
   "type": "commonjs",
   "description": "",
   "devDependencies": {
-    "prisma": "6.10.1"
+    "prisma": "6.10.1",
+    "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
     "@prisma/client": "6.10.1"
