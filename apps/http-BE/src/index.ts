@@ -2,7 +2,7 @@ import express from "express";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { ENV } from "./config";
+import { ENV } from "@repo/backend-common/config";
 import { authMiddleware } from "./middleware";
 
 const app = express();
