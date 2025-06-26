@@ -20,9 +20,6 @@ importers:
 
   apps/http-BE:
     dependencies:
-      '@types/bcrypt':
-        specifier: ^5.0.2
-        version: 5.0.2
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
@@ -45,6 +42,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
+      '@types/bcrypt':
+        specifier: ^5.0.2
+        version: 5.0.2
       '@types/express':
         specifier: ^5.0.3
         version: 5.0.3
@@ -91,6 +91,13 @@ importers:
 
   apps/ws-BE:
     dependencies:
+      jsonwebtoken:
+        specifier: ^9.0.2
+        version: 9.0.2
+      ws:
+        specifier: ^8.18.2
+        version: 8.18.2
+    devDependencies:
       '@repo/backend-common':
         specifier: workspace:*
         version: link:../../packages/backend-common
@@ -103,12 +110,6 @@ importers:
       '@types/ws':
         specifier: ^8.18.1
         version: 8.18.1
-      jsonwebtoken:
-        specifier: ^9.0.2
-        version: 9.0.2
-      ws:
-        specifier: ^8.18.2
-        version: 8.18.2
 
   packages/backend-common:
     dependencies:
