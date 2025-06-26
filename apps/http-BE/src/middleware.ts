@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { ENV } from "./config";
+// import { ENV } from "./config";
+import {ENV} from "@repo/backend-common"
 
 export const authMiddleware = (
   req: Request,
