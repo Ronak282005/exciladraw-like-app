@@ -18,10 +18,22 @@ app.post("/signup", async (req, res) => {
   }
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
+    const existingUser = await prismaClient.user.findFirst({
+      where : {
+        email : username
+      }
+    })
+    if(existingUser){
+      res.status(403).json({
+        msg : "user already registered"
+      })
+    }
     const user = await prismaClient.user.create({
-      username,
-      password,
-      name
+      data : {
+        name,
+        email : username,
+        password : hashedPassword
+      }
     })
     res.json({
       msg: "User added succesfully!",
@@ -33,7 +45,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.post("/signin", (req, res) => {
+app.post("/signin", async(req, res) => {
   const { success } = SigninSchema.safeParse(req.body);
   const { password, username } = req.body;
   if (!success) {
@@ -41,12 +53,18 @@ app.post("/signin", (req, res) => {
       msg: "invalid inputs!",
     });
   }
-  //   db logic
-  const comparePass = bcrypt.compare(password, user.password);
-  const token = jwt.sign({ userId: user._id }, ENV.JWT_SECRET);
-  res.json({
-    token,
-  });
+  try {
+    const user = await prismaClient.User.find
+    const comparePass = bcrypt.compare(password, user.password);
+    const token = jwt.sign({ userId: user.id }, ENV.JWT_SECRET);
+    res.json({
+      token,
+    });
+  } catch (error) {
+   res.status(403).json({
+    error
+   }) 
+  }
 });
 
 app.post("/room", authMiddleware, (req, res) => {
