@@ -109,6 +109,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      dotenv:
+        specifier: ^16.5.0
+        version: 16.5.0
 
   packages/eslint-config:
     devDependencies:
