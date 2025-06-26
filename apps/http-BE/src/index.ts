@@ -1,5 +1,4 @@
 import express from "express";
-import { z } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ENV } from "@repo/backend-common/config";
