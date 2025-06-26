@@ -19,6 +19,7 @@ app.post("/signup", async (req, res) => {
     res.status(403).json({
       msg: "invalid inputs!",
     });
+    return
   }
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -56,6 +57,7 @@ app.post("/signin", async (req, res) => {
     res.status(403).json({
       msg: "invalid inputs!",
     });
+    return
   }
   try {
     const existingUser = await prismaClient.user.findFirst({
