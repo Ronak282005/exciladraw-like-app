@@ -87,17 +87,31 @@ app.post("/signin", async (req, res) => {
   }
 });
 
-app.post("/room", authMiddleware, (req, res) => {
-  const { success } = CreateRoomSchema.safeParse(req.body);
-  if (!success) {
+app.post("/room", authMiddleware,async (req, res) => {
+  const parsedData = CreateRoomSchema.safeParse(req.body);
+  if (!parsedData.success) {
     res.status(403).json({
       msg: "invalid inputs!",
     });
+    return
   }
-  // db logic
-  res.json({
-    roomId: "123",
-  });
+  // @ts-ignore
+  const {userId} = req
+  try {
+    const room = await prismaClient.room.create({
+      data : {
+        slug : parsedData.data.name,
+       adminId : userId 
+      }
+    })
+    res.json({
+      roomId: room.id,
+    });
+  } catch (error) {
+    res.status(403).json({
+      error,
+    });
+  }
 });
 
 app.listen(ENV.HTTP_PORT || 3001, () => {
