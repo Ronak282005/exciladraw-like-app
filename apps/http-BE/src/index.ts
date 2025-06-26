@@ -3,13 +3,13 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { ENV } from "@repo/backend-common/config";
 import { authMiddleware } from "./middleware";
-import { CreateUserSchema } from "@repo/common/types";
+import { CreateUserSchema, SigninSchema , CreateRoomSchema } from "@repo/common/types";
 
 const app = express();
 
 app.post("/signup", async (req, res) => {
   const { success } = CreateUserSchema.safeParse(req.body);
-  const { password, username } = req.body;
+  const { password, username , name } = req.body;
   if (!success) {
     res.status(403).json({
       msg: "invalid inputs!",
@@ -23,7 +23,7 @@ app.post("/signup", async (req, res) => {
 });
 
 app.post("/signin", (req, res) => {
-  const { success } = bodyInput.safeParse(req.body);
+  const { success } = SigninSchema.safeParse(req.body);
   const { password, username } = req.body;
   if (!success) {
     res.status(403).json({
@@ -39,6 +39,12 @@ app.post("/signin", (req, res) => {
 });
 
 app.post("/room", authMiddleware, (req, res) => {
+  const { success } = CreateRoomSchema.safeParse(req.body);
+  if (!success) {
+    res.status(403).json({
+      msg: "invalid inputs!",
+    });
+  }
   // db logic
   res.json({
     roomId: "123",
