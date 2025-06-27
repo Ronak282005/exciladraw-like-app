@@ -1,8 +1,16 @@
-import { WebSocketServer } from "ws";
+import { WebSocket, WebSocketServer } from "ws";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import {ENV} from "@repo/backend-common/config"
 
 const wss = new WebSocketServer({ port: 8080 });
+
+interface User {
+  userId : string
+  ws : WebSocket
+  rooms : string[]
+}
+
+const users : User[] = []
 
 function checkUser(token : string) : string | null {
   const decode = jwt.verify(token as string, ENV.JWT_SECRET);
@@ -27,6 +35,11 @@ wss.on("connection", (ws, request) => {
     ws.close()
     return
   }
+  users.push({
+    userId,
+    ws,
+    rooms : []
+  })
   ws.on("message", (data) => {
     ws.send("pong");
   });
