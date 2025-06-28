@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 // import { ENV } from "./config";
-import {ENV} from "@repo/backend-common/config"
+import { ENV } from "@repo/backend-common/config";
 
 export const authMiddleware = (
   req: Request,
@@ -15,7 +15,7 @@ export const authMiddleware = (
       res.status(403).json({
         msg: "Invalid Token!",
       });
-      return
+      return;
     }
     if ((decode as JwtPayload).userId) {
       // @ts-ignore
@@ -25,7 +25,7 @@ export const authMiddleware = (
       res.status(403).json({
         msg: "Invalid Token2!",
       });
-      return
+      return;
     }
   } catch (error) {
     res.json({
