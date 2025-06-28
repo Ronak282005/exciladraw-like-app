@@ -112,18 +112,31 @@ app.post("/room", authMiddleware,async (req, res) => {
       error,
     });
   }
-});
+}); 
 
-app.get("/room/:slug",(req,res)=>{
+app.get("/chat/:roomId",)
+
+app.get("/room/:slug",async(req,res)=>{
   const {slug} = req.params
-  const room = prismaClient.room.findFirst({
-    where : {
-      slug
+  try {
+    const room = await prismaClient.room.findFirst({
+      where : {
+        slug
+      }
+    })
+    if (!room) {
+      res.status(403).json({
+        msg : "Wrong Slug!"
+      })
     }
-  })
-  res.json({
-    room
-  })
+    res.json({
+      room
+    })
+  } catch (error) {
+    res.status(403).json({
+      error
+    })
+  }
 })
 
 app.listen(ENV.HTTP_PORT || 3001, () => {
