@@ -87,23 +87,23 @@ app.post("/signin", async (req, res) => {
   }
 });
 
-app.post("/room", authMiddleware,async (req, res) => {
+app.post("/room", authMiddleware, async (req, res) => {
   const parsedData = CreateRoomSchema.safeParse(req.body);
   if (!parsedData.success) {
     res.status(403).json({
       msg: "invalid inputs!",
     });
-    return
+    return;
   }
   // @ts-ignore
-  const {userId} = req
+  const { userId } = req;
   try {
     const room = await prismaClient.room.create({
-      data : {
-        slug : parsedData.data.name,
-       adminId : userId 
-      }
-    })
+      data: {
+        slug: parsedData.data.name,
+        adminId: userId,
+      },
+    });
     res.json({
       roomId: room.id,
     });
@@ -112,19 +112,19 @@ app.post("/room", authMiddleware,async (req, res) => {
       error,
     });
   }
-}); 
+});
 
 app.get("/chat/:roomId", async (req, res) => {
   const roomId = Number(req.params.roomId);
   try {
     const message = await prismaClient.chat.findMany({
       where: {
-        roomId
+        roomId,
       },
-      orderBy : {
-        id : "desc"
+      orderBy: {
+        id: "desc",
       },
-      take : 50
+      take: 50,
     });
     res.json({ message });
   } catch (error) {
@@ -134,28 +134,28 @@ app.get("/chat/:roomId", async (req, res) => {
   }
 });
 
-app.get("/room/:slug",async(req,res)=>{
-  const {slug} = req.params
+app.get("/room/:slug", async (req, res) => {
+  const { slug } = req.params;
   try {
     const room = await prismaClient.room.findFirst({
-      where : {
-        slug
-      }
-    })
+      where: {
+        slug,
+      },
+    });
     if (!room) {
       res.status(403).json({
-        msg : "Wrong Slug!"
-      })
+        msg: "Wrong Slug!",
+      });
     }
     res.json({
-      room
-    })
+      room,
+    });
   } catch (error) {
     res.status(403).json({
-      error
-    })
+      error,
+    });
   }
-})
+});
 
 app.listen(ENV.HTTP_PORT || 3001, () => {
   console.log("listening on the port 3000");
