@@ -114,6 +114,18 @@ app.post("/room", authMiddleware,async (req, res) => {
   }
 });
 
+app.get("/room/:slug",(req,res)=>{
+  const {slug} = req.params
+  const room = prismaClient.room.findFirst({
+    where : {
+      slug
+    }
+  })
+  res.json({
+    room
+  })
+})
+
 app.listen(ENV.HTTP_PORT || 3001, () => {
   console.log("listening on the port 3000");
 });
